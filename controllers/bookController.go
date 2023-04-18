@@ -55,7 +55,7 @@ func UpdateBook(ctx *gin.Context) {
 	if isFound == false {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"error_status":  "Data Not Found",
-			"error_message": fmt.Sprintf("car with id %v not found", bookId),
+			"error_message": fmt.Sprintf("book with id %v not found", bookId),
 		})
 		return
 	}
@@ -82,7 +82,7 @@ func GetBook(ctx *gin.Context) {
 	if !condition {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"error_status":  "Data Not Found",
-			"error_message": fmt.Sprintf("car with id %v not found", bookId),
+			"error_message": fmt.Sprintf("book with id %v not found", bookId),
 		})
 		return
 	}
@@ -93,32 +93,33 @@ func GetBook(ctx *gin.Context) {
 
 }
 
-// func DeleteCar(ctx *gin.Context) {
-// 	carId := ctx.Param("CarId")
-// 	condition := false
-// 	var carIndex int
+func DeleteBook(ctx *gin.Context) {
+	bookId := ctx.Param("BookId")
+	condition := false
+	var bookIndex int
 
-// 	for i, car := range CarDatas {
-// 		if carId == car.CarId {
-// 			condition = true
-// 			carIndex = i
-// 			break
-// 		}
-// 	}
+	bookIDInt, _ := strconv.Atoi(bookId)
+	for i, book := range bookDatas {
+		if bookIDInt == book.BookId {
+			condition = true
+			bookIndex = i
+			break
+		}
+	}
 
-// 	if !condition {
-// 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-// 			"error_status":  "Data Not Found",
-// 			"error_message": fmt.Sprintf("car with id %v not found", carId),
-// 		})
-// 		return
-// 	}
+	if !condition {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"error_status":  "Data Not Found",
+			"error_message": fmt.Sprintf("book with id %v not found", bookId),
+		})
+		return
+	}
 
-// 	copy(CarDatas[carIndex:], CarDatas[carIndex+1:])
-// 	CarDatas[len(CarDatas)-1] = Car{}
-// 	CarDatas = CarDatas[:len(CarDatas)-1]
+	copy(bookDatas[bookIndex:], bookDatas[bookIndex+1:])
+	bookDatas[len(bookDatas)-1] = Book{}
+	bookDatas = bookDatas[:len(bookDatas)-1]
 
-// 	ctx.JSON(http.StatusOK, gin.H{
-// 		"message": fmt.Sprintf("car with id %v has been successfully deletd", carId),
-// 	})
-// }
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("book with id %v has been successfully deletd", bookId),
+	})
+}
